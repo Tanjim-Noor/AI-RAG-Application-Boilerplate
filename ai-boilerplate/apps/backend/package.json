@@ -1,0 +1,13 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "powershell -Command \"& { . .\\venv\\Scripts\\Activate.ps1; uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 }\"",
+    "test": "powershell -Command \"& { . .\\venv\\Scripts\\Activate.ps1; pytest }\"",
+    "lint": "powershell -Command \"& { . .\\venv\\Scripts\\Activate.ps1; ruff check . }\"",
+    "format": "powershell -Command \"& { . .\\venv\\Scripts\\Activate.ps1; ruff format . }\"",
+    "migrate": "powershell -Command \"& { . .\\venv\\Scripts\\Activate.ps1; alembic upgrade head }\"",
+    "clean": "powershell -Command \"Remove-Item -Recurse -Force __pycache__, .pytest_cache, .ruff_cache -ErrorAction SilentlyContinue\""
+  }
+}

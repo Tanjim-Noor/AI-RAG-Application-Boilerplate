@@ -1,0 +1,23 @@
+{
+  "name": "ai-boilerplate",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI RAG Boilerplate - Fullstack monorepo with React, FastAPI, and RAG capabilities",
+  "packageManager": "pnpm@10.17.1",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "format": "turbo run format",
+    "clean": "turbo run clean && rm -rf node_modules .turbo"
+  },
+  "devDependencies": {
+    "prettier": "latest",
+    "turbo": "latest"
+  }
+}
