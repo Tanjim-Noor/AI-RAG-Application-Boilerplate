@@ -32,19 +32,25 @@
 
 ### Method 1: Using pnpm (Recommended)
 ```powershell
-cd d:\Work\NotebookLM_simplified\ai-boilerplate
+cd d:\Work\NotebookLM_simplified
 pnpm dev
 ```
 
 ### Method 2: Using the batch file
 ```powershell
-d:\Work\NotebookLM_simplified\ai-boilerplate\dev.bat
+d:\Work\NotebookLM_simplified\dev.bat
 ```
 
 ### Method 3: Using PowerShell script
 ```powershell
-cd d:\Work\NotebookLM_simplified\ai-boilerplate
+cd d:\Work\NotebookLM_simplified
 .\scripts\dev.ps1 dev
+```
+
+### Method 4: Using the setup script (First time setup)
+```powershell
+cd d:\Work\NotebookLM_simplified
+.\scripts\setup.ps1
 ```
 
 ## 🛠️ Available Commands
@@ -62,41 +68,47 @@ cd d:\Work\NotebookLM_simplified\ai-boilerplate
 ## 📁 Project Structure
 
 ```
-ai-boilerplate/
+D:\Work\NotebookLM_simplified/  (ROOT)
+├── .git/                        # Git repository
+├── .github/
+│   ├── instructions/            # Development guidelines
+│   └── workflows/               # GitHub Actions CI/CD
 ├── apps/
-│   ├── frontend/              # React + TypeScript + Vite + Tailwind
+│   ├── frontend/                # React + TypeScript + Vite + Tailwind
 │   │   ├── src/
-│   │   │   ├── app/          # App configuration
-│   │   │   ├── features/     # Feature modules
-│   │   │   ├── shared/       # Shared utilities
-│   │   │   ├── assets/       # Static assets
-│   │   │   ├── main.tsx      # Entry point
-│   │   │   ├── App.tsx       # Main component
-│   │   │   └── index.css     # Global styles
-│   │   ├── vite.config.ts    # Vite configuration
+│   │   │   ├── app/             # App configuration
+│   │   │   ├── features/        # Feature modules
+│   │   │   ├── shared/          # Shared utilities
+│   │   │   ├── assets/          # Static assets
+│   │   │   ├── main.tsx         # Entry point
+│   │   │   ├── App.tsx          # Main component
+│   │   │   └── index.css        # Global styles
+│   │   ├── vite.config.ts       # Vite configuration
 │   │   └── package.json
 │   │
-│   └── backend/               # FastAPI + Python
+│   └── backend/                 # FastAPI + Python
 │       ├── app/
-│       │   └── main.py       # FastAPI app with CORS
-│       ├── venv/             # Python virtual environment
-│       ├── requirements.txt  # Python dependencies
+│       │   └── main.py          # FastAPI app with CORS
+│       ├── venv/                # Python virtual environment (created by setup.ps1)
+│       ├── requirements.txt     # Python dependencies
+│       ├── pyproject.toml       # Python project config
+│       ├── alembic/             # Database migrations
 │       └── package.json
 │
+├── packages/                    # Shared packages (future)
 ├── docker/
-│   └── docker-compose.yml    # PostgreSQL configuration
-│
+│   └── docker-compose.yml       # PostgreSQL configuration
 ├── scripts/
-│   ├── setup.ps1             # Initial setup
-│   ├── dev.ps1               # Development commands
-│   ├── reset-db.ps1          # Database reset
-│   └── validate.ps1          # Validation script
-│
-├── package.json              # Root monorepo config
-├── pnpm-workspace.yaml       # Workspace definition
-├── turbo.json                # Turborepo pipeline
-├── .env                      # Environment variables
-└── dev.bat                   # Quick start batch file
+│   ├── setup.ps1                # Initial setup (run first!)
+│   ├── dev.ps1                  # Development commands
+│   ├── reset-db.ps1             # Database reset
+│   └── validate.ps1             # Validation script
+├── Documents/                   # Documentation
+├── package.json                 # Root monorepo config
+├── pnpm-workspace.yaml          # Workspace definition
+├── turbo.json                   # Turborepo pipeline
+├── .env                         # Environment variables
+└── dev.bat                      # Quick start batch file
 ```
 
 ## 🔧 Configuration Highlights
@@ -130,23 +142,33 @@ ai-boilerplate/
 
 ## 🎨 What Was Fixed
 
-1. **Tailwind CSS v4 Configuration**
+1. **Python Virtual Environment Setup**
+   - Removed duplicate venv folders (root and backend)
+   - Created single venv in `apps/backend/` via `setup.ps1`
+   - Installed all dependencies from `requirements.txt`
+
+2. **Tailwind CSS v4 Configuration**
    - Installed `@tailwindcss/postcss` package
    - Updated `postcss.config.js` to use the new plugin
    - Tailwind now works with Vite
 
-2. **Package Manager Field**
+3. **Package Manager Field**
    - Added `packageManager: "pnpm@10.17.1"` to package.json
    - Required by Turborepo for proper workspace management
 
-3. **Windows Compatibility**
+4. **Windows Compatibility**
    - Created `dev.bat` batch file
    - Created PowerShell scripts (`dev.ps1`, `setup.ps1`, `validate.ps1`)
    - Backend scripts use PowerShell activation for venv
 
-4. **Directory Navigation**
+5. **Directory Navigation**
    - Fixed terminal working directory issues
    - Added proper path resolution in scripts
+
+6. **Setup Script**
+   - Comprehensive setup script (`scripts/setup.ps1`) handles all initial setup
+   - Creates venv, installs dependencies, starts database
+   - Must be run before `pnpm dev` for first-time setup
 
 ## 📝 Next Steps
 
@@ -171,12 +193,27 @@ OPENAI_API_KEY=sk-your-key-here
 ANTHROPIC_API_KEY=sk-ant-your-key-here
 ```
 
-### 3. Verify Everything Works
+### 4. Verify Everything Works
 
 Run the validation script:
 ```powershell
-cd d:\Work\NotebookLM_simplified\ai-boilerplate
+cd d:\Work\NotebookLM_simplified
 .\scripts\validate.ps1
+```
+
+Or test manually:
+```powershell
+# Test root endpoint
+Invoke-RestMethod -Uri http://localhost:8000
+
+# Test health check
+Invoke-RestMethod -Uri http://localhost:8000/health
+
+# Test frontend (should return HTML)
+Invoke-WebRequest -Uri http://localhost:5173 -Method Head
+
+# Test API docs (should return HTML)
+Invoke-WebRequest -Uri http://localhost:8000/docs -Method Head
 ```
 
 ### 4. Start Building!
@@ -203,11 +240,17 @@ Phase 0 is complete. You're ready for:
 - Check container status: `docker ps`
 - Check logs: `docker logs ai-boilerplate-db`
 - Restart database: `cd docker && docker-compose restart`
+- Reset database: `.\scripts\reset-db.ps1`
 
 ### "Make command not found"?
 - That's normal on Windows!
 - Use `pnpm dev` or `dev.bat` instead
 - Or use the PowerShell scripts in `scripts/`
+
+### Backend not starting?
+- Run `.\scripts\setup.ps1` first to set up the venv
+- Check if venv exists: `Test-Path apps\backend\venv`
+- Check if dependencies are installed: `cd apps\backend && .\venv\Scripts\Activate.ps1 && pip list`
 
 ## 🎉 Success Metrics
 
@@ -219,6 +262,8 @@ Phase 0 is complete. You're ready for:
 ✅ Tailwind CSS working
 ✅ CORS configured correctly
 ✅ Environment variables loaded
+✅ Python venv properly configured
+✅ All dependencies installed
 
 ## 📚 Documentation
 

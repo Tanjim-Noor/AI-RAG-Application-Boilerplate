@@ -28,7 +28,7 @@ Before you begin, ensure you have the following installed:
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd ai-boilerplate
+   cd NotebookLM_simplified
    ```
 
 2. **Copy environment variables**
@@ -72,7 +72,7 @@ Before you begin, ensure you have the following installed:
 ## 📁 Project Structure
 
 ```
-ai-boilerplate/
+./ (Root)
 ├── apps/
 │   ├── frontend/          # React + TypeScript + Vite
 │   │   ├── src/
@@ -91,6 +91,8 @@ ai-boilerplate/
 ├── packages/              # Shared packages (future)
 ├── docker/                # Docker configurations
 ├── scripts/               # Setup and utility scripts
+├── .github/               # GitHub workflows and configurations
+├── venv/                  # Root Python virtual environment
 └── turbo.json            # Turborepo configuration
 ```
 
